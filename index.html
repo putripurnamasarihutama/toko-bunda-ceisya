@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CECEBELVA Shop – Katalog & Pembayaran Duitku</title>
+  <meta name="description" content="Katalog produk kecil UMKM dengan tombol bayar via Duitku. Siap deploy di Netlify." />
+  <meta name="robots" content="index,follow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0b1320;          /* navy gelap */
+      --panel:#101a2e;       /* panel lebih terang */
+      --card:#121f37;        /* kartu */
+      --text:#e7eefc;        /* teks utama */
+      --muted:#a7b0c5;       /* teks sekunder */
+      --brand:#57c3ff;       /* aksen biru */
+      --brand-2:#8de6a1;     /* aksen hijau */
+      --danger:#ff6b6b;      /* aksen merah */
+      --radius:16px;
+      --shadow:0 10px 30px rgba(0,0,0,.25);
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,sans-serif;}
+    a{color:var(--brand);text-decoration:none}
+    a:hover{opacity:.9}
+    .container{max-width:1080px;margin:0 auto;padding:24px}
+    header{position:sticky;top:0;background:rgba(11,19,32,.8);backdrop-filter:blur(8px);border-bottom:1px solid rgba(255,255,255,.06);z-index:50}
+    .nav{display:flex;gap:16px;align-items:center;justify-content:space-between}
+    .brand{display:flex;align-items:center;gap:12px;font-weight:700}
+    .brand-dot{width:12px;height:12px;border-radius:999px;background:linear-gradient(135deg,var(--brand),var(--brand-2))}
+    .nav-links{display:flex;gap:16px;flex-wrap:wrap}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 16px;border-radius:12px;border:1px solid rgba(255,255,255,.08);background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(255,255,255,.01));color:var(--text);font-weight:600;transition:.2s;box-shadow:0 0 0 rgba(0,0,0,0)}
+    .btn:hover{transform:translateY(-1px);box-shadow:var(--shadow)}
+    .btn-primary{background:linear-gradient(180deg,var(--brand),#3399ff);border-color:transparent;color:#081424}
+    .btn-success{background:linear-gradient(180deg,var(--brand-2),#4ad879);border-color:transparent;color:#03120a}
+    .hero{padding:56px 0;background:radial-gradient(1200px 500px at 70% -10%,rgba(87,195,255,.3),transparent),radial-gradient(900px 400px at 10% -10%,rgba(141,230,161,.25),transparent)}
+    .hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:24px}
+    .panel{background:var(--panel);border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);box-shadow:var(--shadow)}
+    .pad{padding:24px}
+    h1{font-size:32px;line-height:1.15;margin:0 0 12px}
+    p.lead{color:var(--muted);margin:0 0 20px}
+    .check{display:flex;align-items:flex-start;gap:10px;color:var(--muted)}
+    .check + .check{margin-top:8px}
+    .badge{display:inline-flex;gap:8px;align-items:center;padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);font-size:12px;color:var(--muted)}
+    .grid{display:grid;gap:16px}
+    .products{grid-template-columns:repeat(auto-fill,minmax(240px,1fr));margin-top:16px}
+    .card{background:var(--card);border:1px solid rgba(255,255,255,.08);border-radius:16px;overflow:hidden;display:flex;flex-direction:column}
+    .thumb{aspect-ratio:16/10;background:#0a0f1d url("https://images.unsplash.com/photo-1542831371-29b0f74f9713?q=80&w=1200&auto=format&fit=crop") center/cover no-repeat}
+    .card .meta{display:flex;align-items:center;justify-content:space-between;gap:8px;color:var(--muted);font-size:13px;margin-top:4px}
+    .price{font-weight:700;color:var(--brand-2)}
+    .footer{padding:40px 0;border-top:1px solid rgba(255,255,255,.08);background:#0a1221}
+    .cols{display:grid;gap:20px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+    .mini{text-decoration:underline dotted 1px}
+    .note{font-size:12px;color:var(--muted)}
+    .legal{padding:56px 0}
+    .section-title{font-size:22px;margin:0 0 12px}
+    .table{width:100%;border-collapse:collapse}
+    .table th,.table td{border-bottom:1px solid rgba(255,255,255,.08);padding:10px 0;text-align:left;color:var(--muted)}
+    .table th{color:var(--text)}
+    .pill{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:999px;font-size:12px;color:var(--muted)}
+    .kicker{font-size:12px;color:var(--muted);letter-spacing:.24em;text-transform:uppercase}
+    .box{background:var(--panel);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:16px}
+    @media (max-width:900px){.hero-grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <div class="brand"><span class="brand-dot"></span> CECEBELVA Shop</div>
+      <nav class="nav-links">
+        <a href="#katalog" class="pill">Katalog</a>
+        <a href="#cara-bayar" class="pill">Cara Bayar</a>
+        <a href="#kontak" class="pill">Kontak</a>
+        <a href="#kebijakan-privasi" class="pill">Privasi</a>
+        <a href="#syarat-ketentuan" class="pill">S&K</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container hero-grid">
+      <div class="panel pad">
+        <div class="badge">🚀 Siap verifikasi payment gateway (Duitku)</div>
+        <h1>Toko UMKM Sederhana — <br/>Katalog cantik & tombol bayar <span style="color:var(--brand)">via Duitku</span></h1>
+        <p class="lead">Website satu halaman yang cepat, aman (HTTPS), dan mudah dikelola. Cocok untuk katalog snack, kerajinan, atau jasa.</p>
+        <div class="check">✅ &nbsp;<span>Domain kustom siap: <span class="mini">www.namadomainmu.com</span></span></div>
+        <div class="check">✅ &nbsp;<span>Halaman legal lengkap: Privasi, S&K, Kontak</span></div>
+        <div class="check">✅ &nbsp;<span>Integrasi cepat: <b>Payment Link Duitku</b> / API (opsional)</span></div>
+        <div style="margin-top:18px;display:flex;gap:12px;flex-wrap:wrap">
+          <a href="#katalog" class="btn btn-primary">Lihat Katalog</a>
+          <a href="#cara-bayar" class="btn">Cara Bayar</a>
+        </div>
+      </div>
+      <div class="panel pad">
+        <div class="box">
+          <div class="kicker">Cara cepat lolos verifikasi</div>
+          <ul>
+            <li>Gunakan domain kustom (bukan <code>.netlify.app</code>)</li>
+            <li>Tampilkan minimal 3 produk lengkap (gambar, harga, deskripsi)</li>
+            <li>Sertakan kebijakan: Privasi, S&K, Refund (opsional)</li>
+            <li>Info kontak aktif (WA/Email) & alamat jelas</li>
+            <li>Nama domain/WHOIS konsisten dengan data pendaftaran</li>
+          </ul>
+          <p class="note">Catatan: Kamu bisa mulai dengan Payment Link dulu, lalu naik ke integrasi API jika perlu auto-cek status pembayaran.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="katalog" class="container">
+    <h2 class="section-title">Katalog Produk</h2>
+    <p class="lead">Contoh tiga produk. Kamu bisa edit data di bawah (nama, harga, foto, dan tautan bayar).</p>
+    <div class="grid products" id="product-grid"></div>
+  </section>
+
+  <section id="cara-bayar" class="container" style="margin-top:40px">
+    <h2 class="section-title">Cara Pembayaran</h2>
+    <div class="cols">
+      <div class="box">
+        <h3>🔗 Payment Link (paling mudah)</h3>
+        <ol>
+          <li>Buat Payment Link di dashboard Duitku</li>
+          <li>Salin URL Payment Link</li>
+          <li>Tempel ke tombol <em>Bayar via Duitku</em> pada setiap produk</li>
+        </ol>
+        <p class="note">Kamu juga bisa menambahkan opsi <b>Chat via WhatsApp</b> untuk order manual.</p>
+      </div>
+      <div class="box">
+        <h3>⚙️ Integrasi API (opsional, lebih canggih)</h3>
+        <p>Gunakan <b>Netlify Functions</b> untuk membuat endpoint rahasia (serverless) yang memproses <em>callback</em> status pembayaran dari Duitku lalu menandai pesanan sebagai <em>paid</em>.</p>
+        <p class="note">Butuh sedikit JavaScript. Kamu bisa mulai dari Payment Link, lalu upgrade kapan saja.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="kontak" class="container" style="margin-top:40px">
+    <h2 class="section-title">Kontak Kami</h2>
+    <div class="cols">
+      <div class="box">
+        <table class="table">
+          <tr><th>WhatsApp</th><td><a href="https://wa.me/6281234567890?text=Halo%20saya%20mau%20pesan" target="_blank" rel="noopener">+62 812-3456-7890</a></td></tr>
+          <tr><th>Email</th><td><a href="mailto:halo@namadomainmu.com">halo@namadomainmu.com</a></td></tr>
+          <tr><th>Alamat</th><td>Sepatan, Kabupaten Tangerang, Banten</td></tr>
+          <tr><th>Jam</th><td>Senin–Sabtu, 09.00–17.00 WIB</td></tr>
+        </table>
+        <p class="note">Ubah kontak agar sesuai dengan data pendaftaran di Duitku.</p>
+      </div>
+      <div class="box">
+        <h3>Form Pesan Singkat</h3>
+        <form name="order" method="POST" data-netlify="true">
+          <input type="hidden" name="form-name" value="order">
+          <div class="grid" style="grid-template-columns:1fr 1fr;gap:10px">
+            <input name="nama" required placeholder="Nama" style="padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,.15);background:#0c1628;color:var(--text)">
+            <input name="wa" required placeholder="No. WhatsApp" style="padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,.15);background:#0c1628;color:var(--text)">
+          </div>
+          <input name="produk" placeholder="Produk" style="margin-top:10px;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,.15);background:#0c1628;color:var(--text);width:100%">
+          <textarea name="pesan" placeholder="Catatan" rows="4" style="margin-top:10px;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,.15);background:#0c1628;color:var(--text);width:100%"></textarea>
+          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:10px">
+            <button class="btn btn-success" type="submit">Kirim Pesan</button>
+            <span class="note">Form ini menggunakan <b>Netlify Forms</b> dan akan mengirimkan data ke dashboard Netlify.</span>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <section id="kebijakan-privasi" class="container legal">
+    <h2 class="section-title">Kebijakan Privasi</h2>
+    <p>Kami menghargai privasi Anda. Data yang kami kumpulkan (nama, nomor WhatsApp, alamat, dan detail pesanan) digunakan untuk memproses pesanan dan layanan pelanggan. Kami tidak menjual atau membagikan data pribadi kepada pihak ketiga di luar kebutuhan pengiriman dan pemrosesan pembayaran.</p>
+    <ul>
+      <li>Penanggung jawab data: <b>CECEBELVA Shop</b></li>
+      <li>Kontak privasi: <a href="mailto:privacy@namadomainmu.com">privacy@namadomainmu.com</a></li>
+      <li>Dasar hukum: persetujuan saat mengirimkan formulir dan kepentingan sah untuk memenuhi pesanan</li>
+      <li>Penyimpanan: data disimpan secara terbatas sesuai kebutuhan operasional</li>
+    </ul>
+  </section>
+
+  <section id="syarat-ketentuan" class="container legal">
+    <h2 class="section-title">Syarat & Ketentuan</h2>
+    <ol>
+      <li>Harga sudah termasuk pajak jika berlaku, belum termasuk ongkir.</li>
+      <li>Pembayaran dapat dilakukan melalui gateway pembayaran mitra kami (Duitku).</li>
+      <li>Pesanan akan diproses setelah pembayaran terkonfirmasi.</li>
+      <li>Barang yang sudah dibeli tidak dapat dikembalikan kecuali cacat produksi (lapor maksimal 2×24 jam setelah diterima).</li>
+      <li>Dengan melakukan pemesanan, Anda menyetujui kebijakan privasi kami.</li>
+    </ol>
+  </section>
+
+  <footer class="footer">
+    <div class="container cols">
+      <div>
+        <div class="brand"><span class="brand-dot"></span> CECEBELVA Shop</div>
+        <p class="note">© <span id="y"></span> CECEBELVA Shop. All rights reserved.</p>
+      </div>
+      <div>
+        <div class="kicker">Navigasi</div>
+        <div style="margin-top:8px;display:flex;gap:12px;flex-direction:column">
+          <a href="#katalog">Katalog</a>
+          <a href="#cara-bayar">Cara Bayar</a>
+          <a href="#kontak">Kontak</a>
+          <a href="#kebijakan-privasi">Kebijakan Privasi</a>
+          <a href="#syarat-ketentuan">Syarat & Ketentuan</a>
+        </div>
+      </div>
+      <div>
+        <div class="kicker">Legal</div>
+        <p class="note">Website ini hanyalah contoh. Ubah konten agar sesuai dengan bisnis kamu sebelum mengajukan verifikasi ke payment gateway.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Tahun copyright
+    document.getElementById('y').textContent = new Date().getFullYear();
+
+    // ====== DATA PRODUK (EDIT DI SINI) ======
+    const products = [
+      {
+        name: "Snack Cup 70 ml – Rasa Cokelat",
+        price: 11000,
+        sku: "CUP70-CHOCO",
+        img: "https://images.unsplash.com/photo-1543353071-10c8ba85a904?q=80&w=1200&auto=format&fit=crop",
+        desc: "Cup camilan 70 ml, topping meses. Cocok untuk acara & hampers.",
+        payLink: "https://app.duitku.com/paylink/EXAMPLE_CUP70"
+      },
+      {
+        name: "Mika Sosis Kecil – Paket 5",
+        price: 13500,
+        sku: "MIKA-SOSIS-5",
+        img: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=1200&auto=format&fit=crop",
+        desc: "Mie gepeng + sosis kecil, paket 5 pcs.",
+        payLink: "https://app.duitku.com/paylink/EXAMPLE_MIKA5"
+      },
+      {
+        name: "Nyam-nyam Rice – Cup Besar",
+        price: 16000,
+        sku: "NYAM-RICE-L",
+        img: "https://images.unsplash.com/photo-1505576399279-565b52d4ac71?q=80&w=1200&auto=format&fit=crop",
+        desc: "Cup besar 100 ml, rasa vanilla & cokelat.",
+        payLink: "https://app.duitku.com/paylink/EXAMPLE_NYAM100"
+      }
+    ];
+
+    // Render kartu produk
+    const grid = document.getElementById('product-grid');
+    products.forEach(p=>{
+      const el = document.createElement('article');
+      el.className = 'card';
+      el.innerHTML = `
+        <div class="thumb" style="background-image:url('${p.img}')"></div>
+        <div class="pad">
+          <h3 style="margin:0 0 4px;font-size:18px">${p.name}</h3>
+          <div class="meta">
+            <span class="price">Rp ${p.price.toLocaleString('id-ID')}</span>
+            <span>SKU: ${p.sku}</span>
+          </div>
+          <p style="color:var(--muted);margin:8px 0 14px">${p.desc}</p>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <a class="btn btn-primary" href="${p.payLink}" target="_blank" rel="noopener">Bayar via Duitku</a>
+            <a class="btn" href="https://wa.me/6281234567890?text=Halo%20saya%20mau%20pesan%20${encodeURIComponent(p.name)}%20(SKU%20${p.sku})" target="_blank" rel="noopener">Chat WhatsApp</a>
+          </div>
+        </div>`;
+      grid.appendChild(el)
+    });
+  </script>
+</body>
+</html>
